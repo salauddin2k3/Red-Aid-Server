@@ -35,6 +35,19 @@ async function run() {
       res.send(result)
     })
 
+    app.get("/allPost", async (req, res) => {
+      const cursor = infoCollection.find().sort({deadline: 1});
+      const allInfo = await cursor.toArray();
+      res.send(allInfo);
+    })
+
+    app.get("/singlePost/:id", async (req, res) => {
+      const result = await infoCollection.findOne({
+        _id: new ObjectId(req.params.id)
+      });
+      res.send(result);
+    })
+
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
