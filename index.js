@@ -98,6 +98,21 @@ async function run() {
       res.send(result)
     })
 
+    app.get("/myAnotherInfo/:email", async (req, res) => {
+      console.log(req.params.email);
+      const result = await NewInfoCollection.find({
+        email: req.params.email
+      }).toArray();
+      res.send(result)
+    })
+
+    app.delete("/anotherDelete/:id", async (req, res) => {
+      const result = await NewInfoCollection.deleteOne({
+        _id: new ObjectId(req.params.id)
+      })
+      res.send(result);
+    })
+
 
     // Send a ping to confirm a successful connection
     // await client.db("admin").command({ ping: 1 });
