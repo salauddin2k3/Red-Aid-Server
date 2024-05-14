@@ -66,6 +66,19 @@ async function run() {
       res.send(result)
     })
 
+    // Test $inc Operation
+
+    app.put("/updateINCPost/:id", async (req, res) => {
+      const query = { _id: new ObjectId(req.params.id) };
+      const data = {
+        $inc: {
+          volunteersNeeded: -1
+        }
+      }
+      const result = await infoCollection.updateOne(query, data);
+      res.send(result)
+    })
+
     app.get("/myInfo/:email", async (req, res) => {
       console.log(req.params.email);
       const result = await infoCollection.find({
