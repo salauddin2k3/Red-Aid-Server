@@ -28,6 +28,7 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     const infoCollection = client.db("volunteerStore").collection("volunteerCollection");
+    const NewInfoCollection = client.db("volunteerStore").collection("NewBeVolunteerCollection");
 
     app.post("/addPost", async (req, res) => {
       console.log(req.body);
@@ -36,7 +37,7 @@ async function run() {
     })
 
     app.get("/allPost", async (req, res) => {
-      const cursor = infoCollection.find().sort({deadline: 1});
+      const cursor = infoCollection.find().sort({ deadline: 1 });
       const allInfo = await cursor.toArray();
       res.send(allInfo);
     })
@@ -46,6 +47,55 @@ async function run() {
         _id: new ObjectId(req.params.id)
       });
       res.send(result);
+    })
+
+    app.put("/updatePost/:id", async (req, res) => {
+      const query = { _id: new ObjectId(req.params.id) };
+      const data = {
+        $set: {
+          postTitle: req.body.postTitle,
+          location: req.body.location,
+          thumbnail: req.body.thumbnail,
+          category: req.body.category,
+          volunteersNeeded: req.body.volunteersNeeded,
+          deadline: req.body.deadline,
+          description: req.body.description
+        }
+      }
+      const result = await infoCollection.updateOne(query, data);
+      res.send(result)
+    })
+
+    app.get("/myInfo/:email", async (req, res) => {
+      console.log(req.params.email);
+      const result = await infoCollection.find({
+        email: req.params.email
+      }).toArray();
+      res.send(result)
+    })
+
+    app.delete("/delete/:id", async (req, res) => {
+      const result = await infoCollection.deleteOne({
+        _id: new ObjectId(req.params.id)
+      })
+      res.send(result);
+    })
+
+
+    app.get("/singlePost2/:id", async (req, res) => {
+      const result = await infoCollection.findOne({
+        _id: new ObjectId(req.params.id)
+      });
+      res.send(result);
+    })
+
+    // ------------------------------------------------------------------
+    // New Collection: Be a Volunteer
+
+    app.post("/addNewPost", async (req, res) => {
+      console.log(req.body);
+      const result = await NewInfoCollection.insertOne(req.body);
+      res.send(result)
     })
 
 
