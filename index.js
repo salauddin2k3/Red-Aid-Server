@@ -41,6 +41,14 @@ async function run() {
       res.send(result);
     })
 
+    app.get("/users/:email", async (req, res) => {
+      console.log(req.params.email);
+      const result = await UserInfoCollection.find({
+        email: req.params.email
+      }).toArray();
+      res.send(result)
+    })
+
 
 
 
