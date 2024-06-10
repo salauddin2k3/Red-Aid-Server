@@ -49,6 +49,51 @@ async function run() {
       res.send(result)
     })
 
+    // Make Admin
+    app.patch('/users/admin/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          role: 'admin'
+        }
+      }
+      // const upsert = {upsert : true}
+      const result = await UserInfoCollection.updateOne(filter, updateDoc)
+      res.send(result);
+    })
+
+    // Make Volunteer
+    app.patch('/users/volunteer/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          role: 'volunteer'
+        }
+      }
+      // const upsert = {upsert : true}
+      const result = await UserInfoCollection.updateOne(filter, updateDoc)
+      res.send(result);
+    })
+
+    // Make Donor
+    app.patch('/users/donor/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          role: 'donor'
+        }
+      }
+      // const upsert = {upsert : true}
+      const result = await UserInfoCollection.updateOne(filter, updateDoc)
+      res.send(result);
+    })
+
 
 
 
