@@ -28,8 +28,10 @@ async function run() {
     // Connect the client to the server	(optional starting in v4.7)
     // await client.connect();
     const UserInfoCollection = client.db("redAid").collection("userDataCollection");
+    const donationRequestCollection = client.db("redAid").collection("donationRequestCollection");
 
-    // User related API-------------------
+
+    // User related API----------------------------------------
     app.post('/users', async (req, res) => {
       const user = req.body;
       const result = await UserInfoCollection.insertOne(user);
@@ -92,6 +94,43 @@ async function run() {
       // const upsert = {upsert : true}
       const result = await UserInfoCollection.updateOne(filter, updateDoc)
       res.send(result);
+    })
+
+    // Active & Block
+    app.patch('/users/block/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: 'Block'
+        }
+      }
+      // const upsert = {upsert : true}
+      const result = await UserInfoCollection.updateOne(filter, updateDoc)
+      res.send(result);
+    })
+
+    app.patch('/users/active/:id', async (req, res) => {
+      const id = req.params.id;
+      console.log(id);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: 'Active'
+        }
+      }
+      // const upsert = {upsert : true}
+      const result = await UserInfoCollection.updateOne(filter, updateDoc)
+      res.send(result);
+    })
+
+
+    // Donation Request Api----------------------------
+    app.post("/donationRequest", async (req, res) => {
+      console.log(req.body);
+      const result = await donationRequestCollection.insertOne(req.body);
+      res.send(result)
     })
 
 
