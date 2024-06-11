@@ -179,6 +179,21 @@ async function run() {
       res.send(result);
     })
 
+    // Make Inprogress
+    app.patch('/status/inprogress/:id', async (req, res) => {
+      const id = req.params.id;
+      // console.log(id);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: 'inprogress'
+        }
+      }
+      // const upsert = {upsert : true}
+      const result = await donationRequestCollection.updateOne(filter, updateDoc)
+      res.send(result);
+    })
+
 
 
 
