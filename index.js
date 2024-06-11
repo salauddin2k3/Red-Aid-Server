@@ -134,7 +134,8 @@ async function run() {
     })
 
     app.get('/allRequest', async (req, res) => {
-      const result = await donationRequestCollection.find().toArray();
+      const cursor = donationRequestCollection.find().sort({ donationDate: 1 });
+      const result = await cursor.toArray();
       res.send(result);
     })
 
@@ -142,7 +143,7 @@ async function run() {
       // console.log(req.params.email);
       const result = await donationRequestCollection.find({
         email: req.params.email
-      }).toArray();
+      }).sort({ donationDate: 1 }).toArray();
       res.send(result)
     })
 
