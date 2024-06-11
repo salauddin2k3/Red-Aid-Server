@@ -99,7 +99,7 @@ async function run() {
     // Active & Block
     app.patch('/users/block/:id', async (req, res) => {
       const id = req.params.id;
-      console.log(id);
+      // console.log(id);
       const filter = { _id: new ObjectId(id) };
       const updateDoc = {
         $set: {
@@ -113,7 +113,7 @@ async function run() {
 
     app.patch('/users/active/:id', async (req, res) => {
       const id = req.params.id;
-      console.log(id);
+      // console.log(id);
       const filter = { _id: new ObjectId(id) };
       const updateDoc = {
         $set: {
@@ -131,6 +131,51 @@ async function run() {
       console.log(req.body);
       const result = await donationRequestCollection.insertOne(req.body);
       res.send(result)
+    })
+
+    app.get('/allRequest', async (req, res) => {
+      const result = await donationRequestCollection.find().toArray();
+      res.send(result);
+    })
+
+    app.get("/allRequest/:email", async (req, res) => {
+      // console.log(req.params.email);
+      const result = await donationRequestCollection.find({
+        email: req.params.email
+      }).toArray();
+      res.send(result)
+    })
+
+    app.get("/singleRequest/:id", async (req, res) => {
+      const result = await donationRequestCollection.findOne({
+        _id: new ObjectId(req.params.id)
+      });
+      res.send(result);
+    })
+
+    app.put("/updateRequest/:id", async (req, res) => {
+      const query = { _id: new ObjectId(req.params.id) };
+      const data = {
+        $set: {
+          recipientName: req.body.recipientName,
+          district: req.body.district,
+          donationDate: req.body.donationDate,
+          message: req.body.message,
+          hospitalName: req.body.hospitalName,
+          upazilas: req.body.upazilas,
+          donationTime: req.body.donationTime,
+          fullAddress: req.body.fullAddress
+        }
+      }
+      const result = await donationRequestCollection.updateOne(query, data);
+      res.send(result)
+    })
+
+    app.delete("/delete/:id", async (req, res) => {
+      const result = await donationRequestCollection.deleteOne({
+        _id: new ObjectId(req.params.id)
+      })
+      res.send(result);
     })
 
 
