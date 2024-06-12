@@ -238,6 +238,13 @@ async function run() {
       res.send(result);
     })
 
+    app.delete("/blog/delete/:id", async (req, res) => {
+      const result = await blogDataCollection.deleteOne({
+        _id: new ObjectId(req.params.id)
+      })
+      res.send(result);
+    })
+
 
 
 
