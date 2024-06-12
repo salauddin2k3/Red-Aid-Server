@@ -44,15 +44,12 @@ async function run() {
       res.send(result);
     })
 
-    // All request Sorted
-    app.get('/users/sort/donor', async (req, res) => {
-      try {
-        const result = await UserInfoCollection.find({ role: "donor" }).toArray();
-        res.send(result);
-      } catch (error) {
-        res.status(500).send(error.message);
-      }
-    });
+    app.get('/sort/donor', async (req, res) => {
+      const result = await UserInfoCollection.find({ role: 'donor' }).toArray();
+      res.send(result);
+    })
+
+
 
     app.get("/users/:email", async (req, res) => {
       console.log(req.params.email);
