@@ -214,6 +214,16 @@ async function run() {
       res.send(result)
     })
 
+        // All blog Sorted
+        app.get('/allBlog/sorted', async (req, res) => {
+          try {
+            const result = await blogDataCollection.find({ status: "published" }).toArray();
+            res.send(result);
+          } catch (error) {
+            res.status(500).send(error.message);
+          }
+        });
+
     app.get('/allBLogPost', async (req, res) => {
       const cursor = blogDataCollection.find();
       const result = await cursor.toArray();
