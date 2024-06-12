@@ -44,6 +44,16 @@ async function run() {
       res.send(result);
     })
 
+    // All request Sorted
+    app.get('/users/sort/donor', async (req, res) => {
+      try {
+        const result = await UserInfoCollection.find({ role: "donor" }).toArray();
+        res.send(result);
+      } catch (error) {
+        res.status(500).send(error.message);
+      }
+    });
+
     app.get("/users/:email", async (req, res) => {
       console.log(req.params.email);
       const result = await UserInfoCollection.find({
@@ -214,15 +224,15 @@ async function run() {
       res.send(result)
     })
 
-        // All blog Sorted
-        app.get('/allBlog/sorted', async (req, res) => {
-          try {
-            const result = await blogDataCollection.find({ status: "published" }).toArray();
-            res.send(result);
-          } catch (error) {
-            res.status(500).send(error.message);
-          }
-        });
+    // All blog Sorted
+    app.get('/allBlog/sorted', async (req, res) => {
+      try {
+        const result = await blogDataCollection.find({ status: "published" }).toArray();
+        res.send(result);
+      } catch (error) {
+        res.status(500).send(error.message);
+      }
+    });
 
     app.get('/allBLogPost', async (req, res) => {
       const cursor = blogDataCollection.find();
