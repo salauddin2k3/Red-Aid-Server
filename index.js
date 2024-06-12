@@ -29,6 +29,7 @@ async function run() {
     // await client.connect();
     const UserInfoCollection = client.db("redAid").collection("userDataCollection");
     const donationRequestCollection = client.db("redAid").collection("donationRequestCollection");
+    const blogDataCollection = client.db("redAid").collection("blogCollection");
 
 
     // User related API----------------------------------------
@@ -194,6 +195,54 @@ async function run() {
       })
       res.send(result);
     })
+
+
+    // Blog Post Api----------------------------
+    app.post("/blogPost", async (req, res) => {
+      console.log(req.body);
+      const result = await blogDataCollection.insertOne(req.body);
+      res.send(result)
+    })
+
+    app.get('/allBLogPost', async (req, res) => {
+      const cursor = blogDataCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    })
+
+    app.patch('/status/published/:id', async (req, res) => {
+      const id = req.params.id;
+      // console.log(id);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: 'published'
+        }
+      }
+      // const upsert = {upsert : true}
+      const result = await blogDataCollection.updateOne(filter, updateDoc)
+      res.send(result);
+    })
+
+    app.patch('/status/draft/:id', async (req, res) => {
+      const id = req.params.id;
+      // console.log(id);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: 'draft'
+        }
+      }
+      // const upsert = {upsert : true}
+      const result = await blogDataCollection.updateOne(filter, updateDoc)
+      res.send(result);
+    })
+
+
+
+
+
+
 
     // Make Inprogress
     app.patch('/status/inprogress/:id', async (req, res) => {
