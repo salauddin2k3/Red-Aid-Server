@@ -210,6 +210,36 @@ async function run() {
       res.send(result);
     })
 
+    // Make Done
+    app.patch('/status/done/:id', async (req, res) => {
+      const id = req.params.id;
+      // console.log(id);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: 'done'
+        }
+      }
+      // const upsert = {upsert : true}
+      const result = await donationRequestCollection.updateOne(filter, updateDoc)
+      res.send(result);
+    })
+
+    // Make Cancel
+    app.patch('/status/cancel/:id', async (req, res) => {
+      const id = req.params.id;
+      // console.log(id);
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          status: 'cancel'
+        }
+      }
+      // const upsert = {upsert : true}
+      const result = await donationRequestCollection.updateOne(filter, updateDoc)
+      res.send(result);
+    })
+
 
 
 
