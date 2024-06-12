@@ -156,6 +156,16 @@ async function run() {
       res.send(result);
     })
 
+    // All request Sorted
+    app.get('/sorted/allRequest', async (req, res) => {
+      try {
+        const result = await donationRequestCollection.find({ status: "pending" }).toArray();
+        res.send(result);
+      } catch (error) {
+        res.status(500).send(error.message);
+      }
+    });
+
     app.get("/allRequest/:email", async (req, res) => {
       // console.log(req.params.email);
       const result = await donationRequestCollection.find({
