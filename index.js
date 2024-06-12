@@ -51,6 +51,22 @@ async function run() {
       res.send(result)
     })
 
+    app.put("/users/update/:email", async (req, res) => {
+      const query = { email: req.params.email };
+      const data = {
+        $set: {
+          name: req.body.name,
+          email: req.body.email,
+          district: req.body.district,
+          upazilas: req.body.upazilas,
+          bloodGroup: req.body.bloodGroup,
+          url: req.body.url
+        }
+      }
+      const result = await UserInfoCollection.updateOne(query, data);
+      res.send(result)
+    })
+
     // Make Admin
     app.patch('/users/admin/:id', async (req, res) => {
       const id = req.params.id;
